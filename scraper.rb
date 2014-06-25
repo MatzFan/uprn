@@ -33,26 +33,32 @@ class Scraper
     @agent.submit(form, form.buttons.last)
   end
 
-  def results_page_for(search_string)
+  def results_page(search_string)
     form = get_page_6.form('aspnetForm')
     form.send(ADDRESS_SEARCH_TXT_FIELD, search_string)
     @agent.submit(form, form.buttons.first)
   end
 
-  def get_uprns(search_string)
-    results_page_for(search_string).search(RESULTS_ID).css('option').to_s
+  def get_uprns(results_page)
+    results_page.search(RESULTS_ID).css('option').map { |e| e.attribute('value').content }
   end
 
-  def get_address(search_string, num)
-    results_page = results_page_for(search_string)
+  def get_address(results_page, num)
+    # results = results_page(search_string)
     form = results_page.form('aspnetForm')
     form.field_with(name: '_ctl0:cphContent:CompanyDetail:lpi_contact_address:lb_results').options[num].select
     form.add_field!('__EVENTTARGET', '_ctl0$cphContent$CompanyDetail$lpi_contact_address$lb_results')
     new_page = @agent.submit(form)
-    new_page.search('#_ctl0_cphContent_CompanyDetail_lpi_contact_address_txt_address').children.to_s
+    new_page.search('#_ctl0_cphContent_CompanyDetail_lpi_contact_address_txt_address').children.to_s.gsub("\r\n", ', ')
+  end
+
+  def get_addresses_for(search_string)
+    results = results_page(search_string)
+    addresses = get_uprns(results)
+    addresses.each_with_index do |add, i|
+      add << get_address(results, i)
+    end
+    addresses
   end
 
 end
-
-s = Scraper.new
-puts s.get_address('crabbe', 4)
