@@ -3,8 +3,6 @@ GEM
   specs:
     domain_name (0.5.19)
       unf (>= 0.0.5, < 1.0.0)
-    haml (4.0.5)
-      tilt
     http-cookie (1.0.2)
       domain_name (~> 0.5)
     kgio (2.9.2)
@@ -48,7 +46,6 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  haml (= 4.0.5)
   mechanize (= 2.7.3)
   shotgun (= 0.9)
   sinatra (= 1.4.5)
