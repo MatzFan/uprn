@@ -2,7 +2,24 @@ require 'sinatra'
 require_relative './scraper'
 
 get '/' do
-  s = Scraper.new
-  @addresses = s.get_addresses_for('crabbe')
+  @mech = Mechanizer.new
+  @page = @agent.get_page_6
+  'done'
+end
+
+post '/num_locations' do
+  search_string = params[:search_string]
+  scraper = Scraper.new(search_string)
+  @num_addresses = scraper.num_locations
+  erb :num_addresses
+end
+
+post '/locations_for' do
+  search_string = params[:search_string]
+  scraper = Scraper.new(@mech, @page, search_string)
+  raw_addresses = scraper.addresses
+  # parsed_addresses = raw_addresses.map { |address| Parser.new.parse(address) }
+  @addresses = parsed_addresses.join('^')
   erb :addresses
 end
+
