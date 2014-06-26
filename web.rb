@@ -3,7 +3,7 @@ require_relative './scraper'
 
 get '/' do
   @mech = Mechanizer.new
-  @page = @agent.get_page_6
+  @page = @mech.get_page_6
   'done'
 end
 
