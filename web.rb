@@ -17,9 +17,9 @@ end
 post '/locations_for' do
   search_string = params[:search_string]
   scraper = Scraper.new(@mech, @page, search_string)
-  raw_addresses = scraper.addresses
+  addresses = scraper.addresses
   # parsed_addresses = raw_addresses.map { |address| Parser.new.parse(address) }
-  @addresses = parsed_addresses.join('^')
+  # @addresses = parsed_addresses.join('^')
   erb :addresses
 end
 
