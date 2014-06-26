@@ -8,6 +8,7 @@ class Scraper
   RESULTS_ID = '_ctl0_cphContent_CompanyDetail_lpi_contact_address_lb_results'
   RESULTS_FIELD = '_ctl0:cphContent:CompanyDetail:lpi_contact_address:lb_results'
   ADDRESS_ID = '_ctl0_cphContent_CompanyDetail_lpi_contact_address_txt_address'
+  ADDRESS_COUNT = '_ctl0_cphContent_CompanyDetail_lpi_contact_address_lbl_count'
 
   def initialize(mechanizer, page, search_string)
     @mechanizer = mechanizer
@@ -16,10 +17,14 @@ class Scraper
     @results = get_results
   end
 
-  def get_results
+  def get_results #page
     form = @page.form(FORM)
     form.send(ADDRESS_SEARCH_TXT_FIELD, @search_string)
     @mechanizer.agent.submit(form, form.buttons.first)
+  end
+
+  def address_count
+    @results.search('#' + ADDRESS_COUNT).children.to_s.split(' ')[0].to_i
   end
 
   def get_uprns
@@ -42,3 +47,9 @@ class Scraper
   end
 
 end
+
+# m = Mechanizer.new
+# page_6 = m.get_page_6
+# s = Scraper.new(m, page_6, 'crabbe')
+# puts s.get_uprns
+# puts s.address_count
