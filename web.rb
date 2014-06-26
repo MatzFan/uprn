@@ -14,12 +14,12 @@ post '/num_locations' do
   erb :num_addresses
 end
 
-post '/locations_for' do
+post '/locations' do
   search_string = params[:search_string]
-  scraper = Scraper.new(@mech, @page, search_string)
-  addresses = scraper.addresses
-  # parsed_addresses = raw_addresses.map { |address| Parser.new.parse(address) }
+  @locations = search_string
+  # scraper = Scraper.new(@mech, @page, search_string)
+  # addresses = scraper.addresses
   # @addresses = parsed_addresses.join('^')
-  erb :addresses
+  erb : :locations
 end
 
