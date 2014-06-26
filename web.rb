@@ -10,7 +10,7 @@ post '/locations_for' do
   page_6 = mech.get_page_6
   search_string = params[:search_string]
   scraper = Scraper.new(mech, page_6, search_string)
-  @locations = scraper.addresses
+  @locations = scraper.addresses.join('^')
   erb :locations_for
 end
 
