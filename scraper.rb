@@ -22,13 +22,6 @@ class Scraper
     @mechanizer.agent.submit(form, form.buttons.first)
   end
 
-  def num_locations
-    36
-    # source = get_source(0).force_encoding(Encoding::UTF_8)
-    # num = source.match(/<h3>There are <span>(.*) results/)[1]
-    # num == 'no' ? 0 : num.to_i
-  end
-
   def get_uprns
     @results.search('select#' + RESULTS_ID).css('option').map do |e|
       e.attribute('value').content
