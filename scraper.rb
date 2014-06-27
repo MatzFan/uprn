@@ -10,11 +10,14 @@ class Scraper
   ADDRESS_ID = '_ctl0_cphContent_CompanyDetail_lpi_contact_address_txt_address'
   ADDRESS_COUNT = '_ctl0_cphContent_CompanyDetail_lpi_contact_address_lbl_count'
 
+  attr_reader :count
+
   def initialize(mechanizer, page, search_string)
     @mechanizer = mechanizer
     @page = page
     @search_string = search_string
     @results = get_results
+    @count = count
   end
 
   def get_results #page
@@ -23,7 +26,7 @@ class Scraper
     @mechanizer.agent.submit(form, form.buttons.first)
   end
 
-  def address_count
+  def count
     @results.search('#' + ADDRESS_COUNT).children.to_s.split(' ')[0].to_i
   end
 
@@ -43,13 +46,12 @@ class Scraper
 
   def addresses
     addresses = get_uprns
-    addresses.map { |add| add << get_address(addresses.index(add)) }
+    adds = addresses.map { |add| add << get_address(addresses.index(add)) }
   end
 
 end
 
-# m = Mechanizer.new
-# page_6 = m.get_page_6
-# s = Scraper.new(m, page_6, 'crabbe')
-# puts s.get_uprns
-# puts s.address_count
+m = Mechanizer.new
+page_6 = m.get_page_6
+s = Scraper.new(m, page_6, 'crabbe')
+puts s.addresses
