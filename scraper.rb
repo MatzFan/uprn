@@ -53,5 +53,5 @@ end
 
 # m = Mechanizer.new
 # page_6 = m.get_page_6
-# s = Scraper.new(m, page_6, 'oxford')
+# s = Scraper.new(m, page_6, 'osdvxford')
 # puts s.count

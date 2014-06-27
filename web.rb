@@ -11,7 +11,7 @@ post '/locations_for' do
   search_string = params[:search_string]
   scraper = Scraper.new(mech, page_6, search_string)
   @locs = case scraper.count
-  when 0
+  when '0'
     '0'
   when 'More'
     '>50'
