@@ -9,8 +9,8 @@ post '/locations_for' do
   mech = Mechanizer.new
   page_6 = mech.get_page_6
   search_string = params[:search_string]
-  parish = params[:parish]
-  scraper = Scraper.new(mech, page_6, search_string, parish)
+  parish_num = params[:parish_num]
+  scraper = Scraper.new(mech, page_6, search_string, parish_num)
   @locs = case scraper.count
   when '0'
     '0'
