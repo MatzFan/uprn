@@ -63,7 +63,14 @@ class Scraper
     form.add_field!('__EVENTTARGET', RESULTS_FIELD.gsub(':', '$'))
     postback_page = @mechanizer.agent.submit(form)
     add = postback_page.search('#' + ADDRESS_ID).children.to_s.gsub("\r\n",'|')
-    (add[-1] == '|') && !PARISHES.include?(add.split('|').last) ? add+'|' : add
+    if(add[-1] == '|')
+      add + ' '
+      if(!PARISHES.include?(add.split('|').last))
+        add + '| '
+      end
+    end
+    add
+    # (add[-1] == '|') && !PARISHES.include?(add.split('|').last) ? add+'|' : add
   end
 
   def addresses
