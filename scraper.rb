@@ -5,6 +5,7 @@ class Scraper
 
   FORM = 'aspnetForm'
   ADDRESS_SEARCH_TXT_FIELD = :'_ctl0:cphContent:CompanyDetail:lpi_contact_address:txt_search'
+  PARISH_FIELD = '_ctl0:cphContent:CompanyDetail:lpi_contact_address:drp_parish'
   RESULTS_ID = '_ctl0_cphContent_CompanyDetail_lpi_contact_address_lb_results'
   RESULTS_FIELD = '_ctl0:cphContent:CompanyDetail:lpi_contact_address:lb_results'
   ADDRESS_ID = '_ctl0_cphContent_CompanyDetail_lpi_contact_address_txt_address'
@@ -12,10 +13,11 @@ class Scraper
 
   attr_reader :count
 
-  def initialize(mechanizer, page, search_string)
+  def initialize(mechanizer, page, search_string, parish_num = 0)
     @mechanizer = mechanizer
     @page = page
     @search_string = search_string
+    @parish_num = parish_num # 0 selects 'any parish'
     @results = get_results
     @count = count
   end
@@ -23,11 +25,12 @@ class Scraper
   def get_results #page
     form = @page.form(FORM)
     form.send(ADDRESS_SEARCH_TXT_FIELD, @search_string)
+    form.field_with(name: PARISH_FIELD).options[@parish_num].select
     @mechanizer.agent.submit(form, form.buttons.first)
   end
 
   def count
-    c = @results.search('#' + ADDRESS_COUNT).children.to_s.split(' ')[0]
+    @results.search('#' + ADDRESS_COUNT).children.to_s.split(' ')[0]
   end
 
   def get_uprns
@@ -53,5 +56,5 @@ end
 
 # m = Mechanizer.new
 # page_6 = m.get_page_6
-# s = Scraper.new(m, page_6, 'osdvxford')
+# s = Scraper.new(m, page_6, 'le hurel', 8)
 # puts s.count
