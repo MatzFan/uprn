@@ -22,7 +22,6 @@ class Scraper
     @parish_num = parish_num.to_i # 0 selects 'any parish'
     @results = get_results
     @count = count
-    # @short_addresses = short_addresses
   end
 
   def get_results #page
@@ -31,21 +30,6 @@ class Scraper
     form.field_with(name: PARISH_FIELD).options[@parish_num].select
     @mechanizer.agent.submit(form, form.buttons.first)
   end
-
-  # def short_addresses
-  #   adds = @results.search('#' + RESULTS_ID).children.css('option').children
-  #   adds.map { |add| add.text.strip + ' ' } # space added so split >> 3 fields always
-  # end
-
-  # def postcodes_and_parishes
-  #   postcode_parishes = Array.new(count.to_i)
-  #   field_list = @short_addresses.map { |add| add.split(',') }
-  #   field_list.each_with_index do |add_fields, i|
-  #     num_fields = add_fields.count
-  #     postcode_parishes[i] = [add_fields.last.strip, add_fields[num_fields - 2].strip]
-  #   end
-  #   postcode_parishes
-  # end
 
   def count
     @results.search('#' + ADDRESS_COUNT).children.to_s.split(' ')[0]
@@ -63,14 +47,14 @@ class Scraper
     form.add_field!('__EVENTTARGET', RESULTS_FIELD.gsub(':', '$'))
     postback_page = @mechanizer.agent.submit(form)
     add = postback_page.search('#' + ADDRESS_ID).children.to_s.gsub("\r\n",'|')
+    last_field = add.split('|').last
     if(add[-1] == '|')
-      add + ' '
-      if(!PARISHES.include?(add.split('|').last))
-        add + '| '
+      add << ' '
+      if(!PARISHES.include?(last_field))
+        add << '| '
       end
     end
     add
-    # (add[-1] == '|') && !PARISHES.include?(add.split('|').last) ? add+'|' : add
   end
 
   def addresses
@@ -83,5 +67,4 @@ end
 # m = Mechanizer.new
 # page_6 = m.get_page_6
 # s = Scraper.new(m, page_6, 'crabbe')
-# puts s.short_addresses
 # puts s.addresses
