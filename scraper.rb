@@ -17,7 +17,7 @@ class Scraper
     @mechanizer = mechanizer
     @page = page
     @search_string = search_string
-    @parish_num = parish_num # 0 selects 'any parish'
+    @parish_num = parish_num.to_i # 0 selects 'any parish'
     @results = get_results
     @count = count
   end
@@ -56,5 +56,5 @@ end
 
 # m = Mechanizer.new
 # page_6 = m.get_page_6
-# s = Scraper.new(m, page_6, 'le hurel', 8)
-# puts s.count
+# s = Scraper.new(m, page_6, 'le hurel')
+# puts s.parish_num
