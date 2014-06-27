@@ -27,7 +27,7 @@ class Scraper
   end
 
   def count
-    @results.search('#' + ADDRESS_COUNT).children.to_s.split(' ')[0].to_i
+    c = @results.search('#' + ADDRESS_COUNT).children.to_s.split(' ')[0]
   end
 
   def get_uprns
@@ -41,7 +41,7 @@ class Scraper
     form.field_with(name: RESULTS_FIELD).options[num].select
     form.add_field!('__EVENTTARGET', RESULTS_FIELD.gsub(':', '$'))
     postback_page = @mechanizer.agent.submit(form)
-    postback_page.search('#'+ADDRESS_ID).children.to_s.gsub("\r\n", '|')
+    postback_page.search('#' + ADDRESS_ID).children.to_s.gsub("\r\n", '|')
   end
 
   def addresses
@@ -53,5 +53,5 @@ end
 
 # m = Mechanizer.new
 # page_6 = m.get_page_6
-# s = Scraper.new(m, page_6, 'crabbe')
-# puts s.addresses
+# s = Scraper.new(m, page_6, 'oxford')
+# puts s.count
