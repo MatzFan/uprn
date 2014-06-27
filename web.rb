@@ -10,7 +10,8 @@ post '/locations_for' do
   page_6 = mech.get_page_6
   search_string = params[:search_string]
   scraper = Scraper.new(mech, page_6, search_string)
-  scraper.count < 51 ? @locations = scraper.addresses.join('^') : search_string
+  count = scraper.count
+  @locs = ((1..50).include? count ? scraper.addresses.join('^') : count)
   erb :locations_for
 end
 
