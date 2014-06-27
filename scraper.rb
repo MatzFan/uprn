@@ -51,7 +51,7 @@ class Scraper
 
 end
 
-m = Mechanizer.new
-page_6 = m.get_page_6
-s = Scraper.new(m, page_6, 'crabbe')
-puts s.addresses
+# m = Mechanizer.new
+# page_6 = m.get_page_6
+# s = Scraper.new(m, page_6, 'crabbe')
+# puts s.addresses
