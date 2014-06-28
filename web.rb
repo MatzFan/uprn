@@ -11,14 +11,8 @@ post '/locations_for' do
   search_string = params[:search_string]
   parish_num = params[:parish_num]
   scraper = Scraper.new(mech, page_6, search_string, parish_num)
-  @locs = case scraper.count
-  when '0'
-    '0'
-  when 'More'
-    '>50'
-  else
-    scraper.addresses.join('^')
-  end
+  @count = scraper.count
+  @locations = scraper.addresses.join('^')
   erb :locations_for
 end
 
