@@ -34,5 +34,3 @@ class Mechanizer
   end
 
 end
-
-puts Mechanizer.new.to_s
