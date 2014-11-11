@@ -15,4 +15,3 @@ get '/locations_for' do
   @locations = scraper.addresses.join('^')
   erb :locations_for
 end
-

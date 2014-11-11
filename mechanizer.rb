@@ -13,6 +13,7 @@ class Mechanizer
 
   def initialize
     @agent = Mechanize.new
+    @agent.agent.http.ssl_version = :TLSv1 # Lord knows why this needs to be set
   end
 
   def get_login_page
